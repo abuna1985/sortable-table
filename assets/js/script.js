@@ -1,4 +1,12 @@
 /**
+ * 
+ * TODO Refactor sortTableByColumn to sort with String, Number, and Date values
+ * TODO Loading Screen
+ * 
+ * 
+ */
+
+/**
  * makes fetch call and returns JSON data
  * @param {String} url the desired URL where we will fetch data from 
  * @returns JSON returned from fetch call 
