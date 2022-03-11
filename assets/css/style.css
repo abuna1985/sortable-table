@@ -1,4 +1,11 @@
 /* General */
+:root {
+  --main-header-bg-color: #0074d9;
+  --main-header-bg-color-dark: #005fb2;
+  --main-primary-bg-color: #f8f8f8;
+  --main-secondary-bg-color: #ffffff;
+  --main-accent-bg-color: #dddddd;
+}
 body {
   font-family: sans-serif;
   line-height: 1.25;
@@ -6,13 +13,13 @@ body {
 
 /* Table */
 .table {
-  border: 1px solid #ccc;
+  border: 1px solid var(--main-accent-bg-color);
   border-collapse: collapse;
   caret-color: rgba(0, 0, 0, 0);
   margin: 0;
   padding: 0;
-  width: 100%;
   table-layout: auto;
+  width: 100%;
 }
 
 .table__caption {
@@ -22,16 +29,16 @@ body {
 }
 
 .table__tr {
-  border: 1px solid #ddd;
+  border: 1px solid var(--main-accent-bg-color);
   padding: 5px;
 }
 
 .table__tr:nth-child(odd) {
-  background-color: #f8f8f8;
+  background-color: var(--main-primary-bg-color);
 }
 
 .table__tr:nth-child(even) {
-  background-color: #ffffff;
+  background-color: var(--main-secondary-bg-color);
 }
 
 .table__td {
@@ -44,8 +51,8 @@ body {
 }
 
 .table__th {
-  background-color: #0074d9;
-  color: #fff;
+  background-color: var(--main-header-bg-color);
+  color: var(--main-secondary-bg-color);
   cursor: pointer;
   font-size: 0.9rem;
   letter-spacing: 1px;
@@ -54,7 +61,7 @@ body {
 }
 
 .table__th:hover {
-  background-color: #005fb2;
+  background-color: var(--main-header-bg-color-dark);
 }
 
 .th-sort-asc::after,
@@ -74,7 +81,69 @@ body {
 
 .th-sort-asc,
 .th-sort-desc {
-  background-color: #005fb2;
+  background-color: var(--main-header-bg-color-dark);
+}
+
+.table__container {
+  align-items: center;
+  background-color: var(--main-primary-bg-color);
+  display: flex;
+  height: 90.9vh;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Loading Screen */
+.loading {
+  display: flex;
+  height: 15px;
+  position: relative;
+  width: 105px;
+}
+
+.dot {
+  animation: move 700ms linear 0ms infinite;
+  background-color: var(--main-header-bg-color);
+  border-radius: 50%;
+  height: 15px;
+  margin-right: 30px;
+  width: 15px;
+}
+
+.dot:first-child {
+  animation: grow 700ms linear 0ms infinite;
+  left: 0;
+  position: absolute;
+  top: 0;
+}
+
+.dot:last-child {
+  animation: grow 700ms linear 0s infinite reverse;
+  margin-right: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+/* Keyframes */
+@keyframes grow {
+  from {
+    opacity: 0;
+    transform: scale(0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1, 1);
+  }
+}
+
+@keyframes move {
+  from {
+    transform: translateX(0px);
+  }
+  to {
+    transform: translateX(45px);
+  }
 }
 
 /* Mobile View */
@@ -99,13 +168,13 @@ body {
   }
 
   .table__tr {
-    border-bottom: 3px solid #ddd;
+    border-bottom: 3px solid var(--main-accent-bg-color);
     display: block;
     margin-bottom: 0.625em;
   }
 
   .table__td {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--main-accent-bg-color);
     display: block;
     font-size: 0.8em;
     text-align: right;
