@@ -51,7 +51,7 @@ function memoizedCache() {
 
     // if the column (asc/desc) sorted array is stored
     if (cache[`${order}${column}`]) {
-      console.log('cache has been used');
+      // console.log('cache has been used');
       // use the cached array
       sortedRows = cache[`${order}${column}`]
     } else {
