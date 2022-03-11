@@ -64,23 +64,26 @@ function memoizedCache() {
         if (column === 3) {
           aColumnContent = a.querySelector(`td:nth-child(${column})`).textContent.trim();
           bColumnContent = b.querySelector(`td:nth-child(${column})`).textContent.trim();
+          // console.log('sorted by last name');
         } 
         // In the 'Address' column (6th), only use the numbers to sort
         if (column === 5) {
           aColumnContent = a.querySelector(`td:nth-child(${column+1})`).textContent.split(' ')[0];
           bColumnContent = b.querySelector(`td:nth-child(${column+1})`).textContent.split(' ')[0];
           // console.log({aColumnContent, bColumnContent})
+          // console.log('sorted by street number');
         }
         // If both values can be converted into a Date value, convert it
         if(column === 9) {
           aColumnContent = new Date(aColumnContent);
           bColumnContent = new Date(bColumnContent);
-          console.log('sorted by date');
+          // console.log('sorted by date');
         }
         // If both values can be converted into a Number value, convert it
         if(!Number.isNaN(parseInt(aColumnContent)) && !Number.isNaN(parseInt(bColumnContent))) {
           aColumnContent = parseInt(aColumnContent);
           bColumnContent = parseInt(bColumnContent);
+          // console.log('sorted by number');
         }
         return aColumnContent > bColumnContent ? (1 * dirModifier): bColumnContent > aColumnContent ? (-1 * dirModifier) : 0;
       });
@@ -203,7 +206,7 @@ async function init() {
   } catch (err) {
     console.error(err)
   }
-  
+
   // console.log({data});
   tableHeader.innerHTML = makeHeaderColumns(headerColumns);
   tableBody.innerHTML = makeTableBody(data);
