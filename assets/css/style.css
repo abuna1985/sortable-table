@@ -125,6 +125,10 @@ body {
   top: 0;
 }
 
+.error {
+  text-align: center;
+}
+
 /* Keyframes */
 @keyframes grow {
   from {
