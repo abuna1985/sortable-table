@@ -22,15 +22,20 @@ body {
   width: 100%;
 }
 
-.table__caption {
+/* .table__caption {
   font-size: 2rem;
   font-weight: bold;
   margin: 12px;
-}
+} */
 
 .table__tr {
   border: 1px solid var(--main-accent-bg-color);
   padding: 5px;
+}
+
+.table__tr:first-of-type {
+  border-bottom: 1px solid var(--main-accent-bg-color);
+  border-top: none;
 }
 
 .table__tr:nth-child(odd) {
@@ -54,9 +59,8 @@ body {
   background-color: var(--main-header-bg-color);
   color: var(--main-secondary-bg-color);
   cursor: pointer;
-  font-size: 0.9rem;
   letter-spacing: 1px;
-  padding: 15px;
+  padding: 18px 6px;
   text-transform: uppercase;
 }
 
@@ -127,6 +131,12 @@ body {
 
 .error {
   text-align: center;
+}
+
+*[tabindex]:focus {
+  background-color: var(--main-header-bg-color-dark);
+  border: 2px var(--main-header-bg-color-dark) solid;
+  outline: 2px var(--main-header-bg-color-dark) solid;
 }
 
 /* Keyframes */
