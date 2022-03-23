@@ -82,12 +82,13 @@ async function init() {
       // initialize the array of sorted rows
       let sortedRows = [];
       // stringify order to identify in cache
-      let order = asc ? 'asc' : 'desc';
+      let order = asc ? 'ascending' : 'descending';
       const directionModifier = asc ? 1 : -1;
       // get current table body HTML content
       const tableBody = table.tBodies[0];
       // Extract table row as an array value
-      const rows = Array.from(tableBody.querySelectorAll("tr"));
+      const rows = Array.from(tableBody.querySelectorAll('tr'));
+      const selectedColumnButton = table.querySelector(`th:nth-child(${column + 1})`).firstElementChild;
       // check the cache first
       if (cache[`${order}${column}`]) {
         // console.log('cache has been used');
@@ -135,9 +136,15 @@ async function init() {
         tableBody.removeChild(tableBody.firstChild);
       }
       // Remember how the column is currently sorted
-      table.querySelectorAll(".c-table__button").forEach(button => button.classList.remove("c-table__button--asc", "c-table__button--desc"));
-      table.querySelector(`th:nth-child(${column + 1})`).firstElementChild.classList.toggle("c-table__button--asc", asc);
-      table.querySelector(`th:nth-child(${column + 1})`).firstElementChild.classList.toggle("c-table__button--desc", !asc);
+      table.querySelectorAll('.c-table__button').forEach(button => {
+        button.classList.remove('c-table__button--asc', 'c-table__button--desc');
+        button.setAttribute('aria-pressed', 'false')
+      });
+      selectedColumnButton.classList.toggle('c-table__button--asc', asc);
+      selectedColumnButton.classList.toggle('c-table__button--desc', !asc);
+      selectedColumnButton.setAttribute('aria-pressed', 'true');
+      selectedColumnButton.setAttribute('aria-label', `${selectedColumnButton.textContent} - ${order.toUpperCase()} ORDER`);
+
       // Add newly sorted rows
       return tableBody.append(...sortedRows);
     }
@@ -148,7 +155,7 @@ async function init() {
   * @return  {String}  headerRow The HTML string template of the table header columns
   */
   function renderHeaderColumns(columns) {
-      let headerRow = `<tr class="table_tr">${columns.map((column, index) => `<th scope="col" class="c-table__th"><button class="c-table__button js-column-button" data-id="${index}" tabindex="0">${column}</button></th>`).join("")}</tr>`;
+      let headerRow = `<tr class='table_tr'>${columns.map((column, index) => `<th scope='col' class='c-table__th'><button class='c-table__button js-column-button' data-id='${index}' tabindex='0' aria-pressed='false'>${column}</button></th>`).join('')}</tr>`;
       // console.log({headerRow});
       return headerRow;
   }
@@ -160,21 +167,21 @@ async function init() {
   function renderTableBody(userData) {
     if (!userData.length) {
       // console.log({userData});
-      return `<tr class="c-table__tr"><td colspan="10" class="has-error">No data available. Please try again later.</td></tr>`;
+      return `<tr class='c-table__tr'><td colspan='10' class='has-error'>No data available. Please try again later.</td></tr>`;
     }
     let rows = userData.map((user, index) => {
     return `
-    <tr class="c-table__tr">
-      <td class="c-table__td" data-label="ID">${(parseInt(index) + 1)}</td>
-      <td class="c-table__td" data-label="FIRST">${user?.name?.first}</td>
-      <td class="c-table__td" data-label="LAST">${user?.name?.last}</td>
-      <td class="c-table__td" data-label="IMAGE" data-id=${(parseInt(index) + 1)}><img alt="Photo of ${user?.name?.first} ${user?.name?.last}" class="c-table__image" loading="eager" src="${user?.picture?.thumbnail}" /></td>
-      <td class="c-table__td" data-label="PHONE">${user?.cell.replace('-', ' ')}</td>
-      <td class="c-table__td" data-label="ADDRESS">${user?.location?.street?.number} ${user?.location?.street?.name}</td>
-      <td class="c-table__td" data-label="CITY">${user?.location?.city}</td>
-      <td class="c-table__td" data-label="STATE">${user?.location?.state}</td>
-      <td class="c-table__td" data-label="ZIP">${user?.location?.postcode}</td>
-      <td class="c-table__td" data-label="MEMBER SINCE">${formatDate(user?.registered?.date)}</td>
+    <tr class='c-table__tr'>
+      <td class='c-table__td' data-label='ID'>${(parseInt(index) + 1)}</td>
+      <td class='c-table__td' data-label='FIRST'>${user?.name?.first}</td>
+      <td class='c-table__td' data-label='LAST'>${user?.name?.last}</td>
+      <td class='c-table__td' data-label='IMAGE' data-id=${(parseInt(index) + 1)}><img alt='Photo of ${user?.name?.first} ${user?.name?.last}' class='c-table__image' loading='eager' src='${user?.picture?.thumbnail}' /></td>
+      <td class='c-table__td' data-label='PHONE'>${user?.cell.replace('-', ' ')}</td>
+      <td class='c-table__td' data-label='ADDRESS'>${user?.location?.street?.number} ${user?.location?.street?.name}</td>
+      <td class='c-table__td' data-label='CITY'>${user?.location?.city}</td>
+      <td class='c-table__td' data-label='STATE'>${user?.location?.state}</td>
+      <td class='c-table__td' data-label='ZIP'>${user?.location?.postcode}</td>
+      <td class='c-table__td' data-label='MEMBER SINCE'>${formatDate(user?.registered?.date)}</td>
     </tr>
     `;
     });
@@ -187,12 +194,12 @@ async function init() {
   */
   function renderLoadingContainer() {
     return `
-    <div class="l-loading-container">
-      <div class="is-loading">
-        <span class="is-loading__dot"></span>
-        <span class="is-loading__dot"></span>
-        <span class="is-loading__dot"></span>
-        <span class="is-loading__dot"></span>
+    <div class='l-loading-container'>
+      <div class='is-loading'>
+        <span class='is-loading__dot'></span>
+        <span class='is-loading__dot'></span>
+        <span class='is-loading__dot'></span>
+        <span class='is-loading__dot'></span>
       </div>
     </div>
     `;
@@ -249,12 +256,12 @@ async function init() {
   tableBody.innerHTML = renderTableBody(results);
 
   // Click Event Listener
-  document.addEventListener("click", event => {
+  document.addEventListener('click', event => {
     // the function will only run when a <th> is clicked on
-    if (event.target.closest(".js-column-button")) {
+    if (event.target.closest('.js-column-button')) {
       const tableElement = event.target.parentNode.parentNode.parentNode.parentNode;
-      const headerIndex = parseInt(event.target.getAttribute("data-id"));
-      const currentIsAscending = event.target.classList.contains("c-table__button--asc");
+      const headerIndex = parseInt(event.target.getAttribute('data-id'));
+      const currentIsAscending = event.target.classList.contains('c-table__button--asc');
       
       sortTableByColumn(tableElement, headerIndex, !currentIsAscending);
     }
