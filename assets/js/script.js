@@ -1,29 +1,27 @@
-// The init function is called when the JavaScript is loaded
+// I felt it was a good practice to wrap all JavaScript logic into a function so global variables/functions are not accessible in the console
 async function init() {
 
   // 1. VARIABLES
-
-  const tableHeader = document.querySelector('.table__head');
-  const tableBody = document.querySelector('.table__body');
+  const tableHeader = document.querySelector('.c-table__head');
+  const tableBody = document.querySelector('.c-table__body');
+  // Since the data being returned is an array, I can start with an empty array so I can handle edge cases when trying to render it in HTML
   let results = [];
-  // fetch data and return 9 results
-  const endpointURL = `https://randomuser.me/api/?nat=us&results=9`;
-  // Custom header column names
+  // 10 results allowed me to render a table that fit within the desktop/tablet screen
+  // I may experiment with more results to see how scrolling has an effect on the page
+  const endpointURL = `https://randomuser.me/api/?nat=us&results=10`;
+  // Chose these 10 properties since they fit the 100% width of the table
   let headerColumns = ['ID', 'FIRST', 'LAST', 'IMAGE', 'PHONE', 'ADDRESS', 'CITY', 'STATE', 'ZIP', 'MEMBER SINCE'];
-  // Initialize the cache to store sorted arrays
+  // From now on we can use the function name sortTableByColumn and still access to store sorted arrays in the cache object
   let sortTableByColumn = memoizedCache();
   // For easy reference to the keyboard key numbers
+  // I wanted to implement Object.freeze to ensure properties cannot be added to the KEYS constant (making it a true constant variable)
   const KEYS = Object.freeze({
     end: 35,
     home: 36,
     left: 37,
-    up: 38,
     right: 39,
-    down: 40,
-    enter: 13,
-    space: 32,
   });
-  // Add or subtract depending on key pressed
+    // I wanted to implement Object.freeze to ensure properties cannot be added to the DIRECTION constant (making it a true constant variable)
   const DIRECTION = Object.freeze({
     37: -1,
     38: -1,
@@ -39,6 +37,8 @@ async function init() {
   * @return {Array}   data.results   An array of objects containing users info
   */
   async function fetchUserData(url) {
+    // A good practice to wrap await logic within a try/catch
+    // This will ensure you get an error if something goes wrong with the asynchronous logic (like the fetch and what comes back from it)
     try {
       let response = await fetch(url);
       if (!response.ok) {
@@ -71,27 +71,27 @@ async function init() {
   function memoizedCache() {
     let cache = {}
     /**
-    * Returns a function that sorts the table in ascending/descending order and updates the view of the table
+    * Sorts the table in ascending/descending order and updates the view of the table
     * 
     * @param {HTMLTableElement}  table   The desired table that needs to be sorted
     * @param {Number}            column  The index of the column to sort
     * @param {Boolean}           asc     Determines if the sorting will be in ascending/descending order
+    * @return {Function}                 Returns the function that will be used to sort and memoize the 
     */ 
     return (table, column, asc = true) => {
       // initialize the array of sorted rows
       let sortedRows = [];
       // stringify order to identify in cache
       let order = asc ? 'asc' : 'desc';
-      // 1 is ascending, -1 if descending
-      const dirModifier = asc ? 1 : -1;
+      const directionModifier = asc ? 1 : -1;
       // get current table body HTML content
       const tableBody = table.tBodies[0];
-      // Extract table row as an array element
+      // Extract table row as an array value
       const rows = Array.from(tableBody.querySelectorAll("tr"));
-      // if the column (asc/desc) sorted array is stored
+      // check the cache first
       if (cache[`${order}${column}`]) {
         // console.log('cache has been used');
-        // use the cached array
+        // Since it is available, we will use the sorted array stored in cache
         sortedRows = cache[`${order}${column}`];
       } else {
         // Sort each row
@@ -99,13 +99,13 @@ async function init() {
           // Default will be HTML Content as a String
           let aColumnContent = a.querySelector(`td:nth-child(${column+1})`).textContent.trim();
           let bColumnContent = b.querySelector(`td:nth-child(${column+1})`).textContent.trim();
-          // If it is 'IMAGES' column (4th), use the values in 'LAST' (3rd column) to sort
+          // If it is 'IMAGES' column (4th), use the data-id attribute within the <img> element
           if (column === 3) {
-            aColumnContent = a.querySelector(`td:nth-child(${column})`).textContent.trim();
-            bColumnContent = b.querySelector(`td:nth-child(${column})`).textContent.trim();
+            aColumnContent = a.querySelector(`td:nth-child(${column+1})`).getAttribute('data-id');
+            bColumnContent = b.querySelector(`td:nth-child(${column+1})`).getAttribute('data-id');
             // console.log('sorted by last name');
           } 
-          // In the 'Address' column (6th), only use the numbers to sort
+          // In the 'Address' column (6th), only use the numbers from the address to sort
           if (column === 5) {
             aColumnContent = a.querySelector(`td:nth-child(${column+1})`).textContent.split(' ')[0];
             bColumnContent = b.querySelector(`td:nth-child(${column+1})`).textContent.split(' ')[0];
@@ -124,7 +124,7 @@ async function init() {
             bColumnContent = parseInt(bColumnContent);
             // console.log('sorted by number');
           }
-          return aColumnContent > bColumnContent ? (1 * dirModifier): bColumnContent > aColumnContent ? (-1 * dirModifier) : 0;
+          return aColumnContent > bColumnContent ? (1 * directionModifier): bColumnContent > aColumnContent ? (-1 * directionModifier) : 0;
         });
         cache[`${order}${column}`] = sortedRows;
         // console.log({cache})
@@ -135,9 +135,9 @@ async function init() {
         tableBody.removeChild(tableBody.firstChild);
       }
       // Remember how the column is currently sorted
-      table.querySelectorAll("th").forEach(th => th.classList.remove("th-sort-asc", "th-sort-desc"));
-      table.querySelector(`th:nth-child(${column + 1})`).classList.toggle("th-sort-asc", asc);
-      table.querySelector(`th:nth-child(${column + 1})`).classList.toggle("th-sort-desc", !asc);
+      table.querySelectorAll(".c-table__button").forEach(button => button.classList.remove("c-table__button--asc", "c-table__button--desc"));
+      table.querySelector(`th:nth-child(${column + 1})`).firstElementChild.classList.toggle("c-table__button--asc", asc);
+      table.querySelector(`th:nth-child(${column + 1})`).firstElementChild.classList.toggle("c-table__button--desc", !asc);
       // Add newly sorted rows
       return tableBody.append(...sortedRows);
     }
@@ -148,7 +148,7 @@ async function init() {
   * @return  {String}  headerRow The HTML string template of the table header columns
   */
   function renderHeaderColumns(columns) {
-      let headerRow = `<tr class="table_tr">${columns.map((column, index) => `<th scope="col" tabindex="0" data-id="${index}" class="table__th">${column}</th>`).join("")}</tr>`;
+      let headerRow = `<tr class="table_tr">${columns.map((column, index) => `<th scope="col" class="c-table__th"><button class="c-table__button js-column-button" data-id="${index}" tabindex="0">${column}</button></th>`).join("")}</tr>`;
       // console.log({headerRow});
       return headerRow;
   }
@@ -160,21 +160,21 @@ async function init() {
   function renderTableBody(userData) {
     if (!userData.length) {
       // console.log({userData});
-      return `<tr class="table__tr"><td colspan="10" class="error">No data available. Please try again later.</td></tr>`;
+      return `<tr class="c-table__tr"><td colspan="10" class="has-error">No data available. Please try again later.</td></tr>`;
     }
     let rows = userData.map((user, index) => {
     return `
-    <tr class="table__tr">
-      <td class="table__td" data-label="ID">${(parseInt(index) + 1)}</td>
-      <td class="table__td" data-label="FIRST">${user?.name?.first}</td>
-      <td class="table__td" data-label="LAST">${user?.name?.last}</td>
-      <td class="table__td" data-label="IMAGE" data-id=${(parseInt(index) + 1)}><img alt="Photo of ${user?.name?.first} ${user?.name?.last}" class="table__td--img" loading="eager" src="${user?.picture?.thumbnail}" /></td>
-      <td class="table__td" data-label="PHONE">${user?.cell.replace('-', ' ')}</td>
-      <td class="table__td" data-label="ADDRESS">${user?.location?.street?.number} ${user?.location?.street?.name}</td>
-      <td class="table__td" data-label="CITY">${user?.location?.city}</td>
-      <td class="table__td" data-label="STATE">${user?.location?.state}</td>
-      <td class="table__td" data-label="ZIP">${user?.location?.postcode}</td>
-      <td class="table__td" data-label="MEMBER SINCE">${formatDate(user?.registered?.date)}</td>
+    <tr class="c-table__tr">
+      <td class="c-table__td" data-label="ID">${(parseInt(index) + 1)}</td>
+      <td class="c-table__td" data-label="FIRST">${user?.name?.first}</td>
+      <td class="c-table__td" data-label="LAST">${user?.name?.last}</td>
+      <td class="c-table__td" data-label="IMAGE" data-id=${(parseInt(index) + 1)}><img alt="Photo of ${user?.name?.first} ${user?.name?.last}" class="c-table__image" loading="eager" src="${user?.picture?.thumbnail}" /></td>
+      <td class="c-table__td" data-label="PHONE">${user?.cell.replace('-', ' ')}</td>
+      <td class="c-table__td" data-label="ADDRESS">${user?.location?.street?.number} ${user?.location?.street?.name}</td>
+      <td class="c-table__td" data-label="CITY">${user?.location?.city}</td>
+      <td class="c-table__td" data-label="STATE">${user?.location?.state}</td>
+      <td class="c-table__td" data-label="ZIP">${user?.location?.postcode}</td>
+      <td class="c-table__td" data-label="MEMBER SINCE">${formatDate(user?.registered?.date)}</td>
     </tr>
     `;
     });
@@ -187,18 +187,17 @@ async function init() {
   */
   function renderLoadingContainer() {
     return `
-    <div class="table__container">
-      <div class="loading">
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
+    <div class="l-loading-container">
+      <div class="is-loading">
+        <span class="is-loading__dot"></span>
+        <span class="is-loading__dot"></span>
+        <span class="is-loading__dot"></span>
+        <span class="is-loading__dot"></span>
       </div>
     </div>
     `;
   }
 
-  // 
   /**
    * Event handler for key press events
    * @param {Object} event where event information is stored
@@ -252,10 +251,10 @@ async function init() {
   // Click Event Listener
   document.addEventListener("click", event => {
     // the function will only run when a <th> is clicked on
-    if (event.target.closest(".table__th")) {
-      const tableElement = event.target.parentElement.parentElement.parentElement;
+    if (event.target.closest(".js-column-button")) {
+      const tableElement = event.target.parentNode.parentNode.parentNode.parentNode;
       const headerIndex = parseInt(event.target.getAttribute("data-id"));
-      const currentIsAscending = event.target.classList.contains("th-sort-asc");
+      const currentIsAscending = event.target.classList.contains("c-table__button--asc");
       
       sortTableByColumn(tableElement, headerIndex, !currentIsAscending);
     }
