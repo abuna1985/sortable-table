@@ -1,16 +1,16 @@
 # Sortable Columns Table
 
+![Desktop view of the sortable columns table](./assets/images/desktop-home.jpg)
+
 ## Table Of Contents
 
 - [Sortable Columns Table](#sortable-columns-table)
   - [Table Of Contents](#table-of-contents)
   - [Overview](#overview)
-    - [The Challenge](#the-challenge)
-      - [Bonus](#bonus)
-    - [Screenshot](#screenshot)
-      - [Desktop View](#desktop-view)
-      - [Mobile View](#mobile-view)
-    - [Links](#links)
+    - [Requirements](#requirements)
+      - [Bonus Requirements](#bonus-requirements)
+    - [API](#api)
+    - [Demo](#demo)
   - [My Process](#my-process)
     - [Built with](#built-with)
     - [What I Learned](#what-i-learned)
@@ -18,43 +18,108 @@
       - [Sorting Memoization](#sorting-memoization)
       - [Loading Screen](#loading-screen)
     - [Continued Development](#continued-development)
-    - [Useful Resources](#useful-resources)
+    - [Resources](#resources)
+      - [HTML links](#html-links)
+      - [CSS links](#css-links)
+      - [JavaScript Links](#javascript-links)
   - [Author](#author)
   - [Acknowledgments](#acknowledgments)
 
 ## Overview
 
-### The Challenge
+This project is a simple single-page responsive design which takes data from the [Random User Generator API](https://randomuser.me/) and builds a table which can sorted by the column headers with a mouse and/or keyboard.
 
-Users should be able to:
+### Requirements
 
-- See a table with user information or an error message
-- Be able to click on all the column headers to sort it by that column
+1. Use the result a from the [Random User Generator API](https://randomuser.me/)
+2. Use HTML, CSS and Javascript to show the data in a readable table (including mobile view)
+3. All columns should have the ability to be sorted by mouse and/or keyboard
 
-#### Bonus
+**As a user, I should:**
 
-### Screenshot
+- [x] See a <code>loading</code> state when the page initially renders
+- [x] See an HTML <code>table</code> when the data is successfully loaded
+- [x] See an <code>error</code> message within the table body if it is not working
+- [x] Be able to <code>click</code> on a column, see a visual cue that the column has been selected
+- [x] Be able to use the following keyboard keys to control:
+  - **Direction**
+    - [x] <code>tab</code>, <code>shift+tab</code>
+    - [x] <code>&#8593;</code>, <code>&#8595;</code>, <code>&#8592;</code>, <code>&#8594;</code>
+  - **Sorting**
+    - [x] <code>enter</code>, <code>space</code></h2>
 
-#### Desktop View
+#### Bonus Requirements
 
-![Desktop view of the sortable columns table](./assets/images/desktop-home.jpg)
+**As a developer, I should**
 
-#### Mobile View
+- [x] Implement
 
-![Mobile view of the sortable columns table](./assets/images/mobile-home.jpg)
+### API
 
-### Links
+<details>
+<summary><strong>Click Here</strong> to see the random user properties available</summary>
 
-- Solution URL: [GitHub Repo](https://github.com/abuna1985/sortable-columns-table/)
+- `gender`: (string) gender (male/female),
+- `name`: (object) contains name data
+  - `title`: (string) title (Mr., Ms, etc)
+  - `first`: (string) first name
+  - `last`: (string) last name
+- `location`: (object) contains location data
+  - `street`: (string) street number and name
+  - `city`: (string)city
+  - `state`: (string) state
+  - `postcode`: (string) zip/postal code
+- `coordinates`: (object) contains coordinates data
+  - `latitude`: (string) latitude
+  - `longitude`: (string) longitude
+- `timezone`: (object) contains time zone data
+  - `offset`: (string) timezone offset
+  - `description`: (string) time zone
+- `email`: (string) email address
+- `login`: (object) contains login data
+  - `uuid`: (string) unique user id,
+  - `username`: (string) username
+  - `password`: (string) password
+  - `salt`: (string) salt hash
+  - `md5`: (string) md5 hash
+  - `sha1`: (string) sha1 hash
+  - `sha256`: (string) sha256 hash
+- `dob`: (object) contains age data
+  - `date`: (timestamp) date of birth
+  - `age`: (number) age of person
+- `registered`: (object) contains registration data
+  - `date`: (timestamp) registration
+  - `age`: (number) age of membership
+- `phone`: (string) phone number
+- `cell`: (string) cell phone number
+- `id`: (object) contains id data
+  - `name`: (string) id name
+  - `value`: (string) id value
+- `picture`: (object) contains picture data
+  - `large`: (string) URL of large image
+  - `medium`: (string) URL of medium image
+  - `thumbnail`: (string) URL of thumbnail image
+- `nat`: (string) nationality
+
+</details>
+
+### Demo
+
 - Live Site URL: [GitHub Pages](https://abuna1985.github.io/sortable-columns-table/)
+- Solution URL: [GitHub Repo](https://github.com/abuna1985/sortable-columns-table/)
 
 ## My Process
 
 ### Built with
 
-- Semantic HTML5 markup
-- CSS custom properties
+- Semantic HTML5
+- CSS3
+  - Normalize.css
+  - CSS Animation
+  - CSS custom properties
 - ES6 JavaScript
+  - Async/Await
+  - Fetch
 
 ### What I Learned
 
@@ -74,13 +139,13 @@ To see how you can add code snippets, see below:
 
 ```css
 .proud-of-this-css {
-  color: papayawhip;
+	color: papayawhip;
 }
 ```
 
 ```js
 const proudOfThisFunc = () => {
-  console.log("🎉");
+	console.log('🎉');
 };
 ```
 
@@ -90,17 +155,25 @@ If you want more help with writing markdown, we'd recommend checking out [The Ma
 
 Use this section to outline areas that you want to continue focusing on in future projects. These could be concepts you're still not completely comfortable with or techniques you found useful that you want to refine and perfect.
 
-### Useful Resources
+### Resources
 
-- [Go Make Things - Event Delegation](https://gomakethings.com/listening-for-events-on-multiple-elements-using-javascript-event-delegation/) - This helped me better understand how event delegation works in JavaScript.
+#### HTML links
+
+#### CSS links
+
+- [MDN Docs - table-layout](https://developer.mozilla.org/en-US/docs/Web/CSS/table-layout)
+- [LogRocket- CSS animated page loading](https://blog.logrocket.com/animated-page-loaders-css/)
+
+#### JavaScript Links
+
+- [Go Make Things - JavaScript Event Delegation](https://gomakethings.com/listening-for-events-on-multiple-elements-using-javascript-event-delegation/) - This helped me better understand how event delegation works in JavaScript.
 - [Go Make Things - Inject text and HTML with JavaScript](https://gomakethings.com/four-different-ways-to-inject-text-and-html-into-an-element-with-vanilla-javascript/) - This article helped me as a reference.
 - [Random User API Documentation](https://randomuser.me/documentation#howto) Here is the documentation for the Random User API for reference.
-- [MDN Docs - table-layout](https://developer.mozilla.org/en-US/docs/Web/CSS/table-layout)
-- [](https://javascript.info/optional-chaining)
+- [JavaScript.info - Optional Chaining](https://javascript.info/optional-chaining)
 - [](https://codepen.io/Orangetronic/full/pJgpXw)
-- [](https://vanillajstoolkit.com/helpers/formatdate/)
-- [](https://blog.logrocket.com/animated-page-loaders-css/)
-- [](https://masteringjs.io/tutorials/fundamentals/typeof-date)
+- [Go Make Things - Chris Ferndinandi - JavaScript format date helper function](https://vanillajstoolkit.com/helpers/formatdate/)
+- [Mastering JS - Date object](https://masteringjs.io/tutorials/fundamentals/typeof-date)
+- [freeCodeCamp - Understanding JavaScript Memoization](https://www.freecodecamp.org/news/understanding-memoize-in-javascript-51d07d19430e/)
 
 ## Author
 
