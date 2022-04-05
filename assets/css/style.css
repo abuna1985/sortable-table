@@ -109,8 +109,8 @@ body {
 	outline-color: #003666;
 }
 
-.c-table__button--asc::after,
-.c-table__button--desc::after {
+.c-table__button--asc,
+.c-table__button--desc {
 	margin-left: 2px;
 }
 
