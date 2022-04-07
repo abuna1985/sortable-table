@@ -12,6 +12,20 @@ async function init() {
 	let headerColumns = ['ID', 'FIRST', 'LAST', 'IMAGE', 'PHONE', 'ADDRESS', 'CITY', 'STATE', 'ZIP', 'MEMBER SINCE'];
 	// From now on we can use the function name sortTableByColumn and still access to store sorted arrays in the cache object
 	let sortTableByColumn = memoizedCache();
+	// For easy reference to the keyboard key numbers
+	// I wanted to implement Object.freeze to ensure properties cannot be added to the CODES constant (making it a true constant variable)
+	const CODES = Object.freeze({
+		end: 'End',
+		home: 'Home',
+		left: 'ArrowLeft',
+		right: 'ArrowRight',
+		up: 'ArrowUp',
+		down: 'ArrowDown',
+		a: 'KeyA',
+		s: 'KeyS',
+		d: 'KeyD',
+		w: 'KeyW',
+	});
 
 	// 2. METHODS
 
@@ -66,7 +80,7 @@ async function init() {
 			// initialize the array of sorted rows
 			let sortedRows = [];
 			// stringify order to identify in cache
-			let order = asc ? 'ascending' : 'descending';
+			const order = asc ? 'ascending' : 'descending';
 			const directionModifier = asc ? 1 : -1;
 			// get current table body HTML content
 			const tableBody = table.tBodies[0];
@@ -74,8 +88,8 @@ async function init() {
 			// Extract table row as an array value
 			const rows = Array.from(tableBody.querySelectorAll('tr'));
 			const selectedColumnButton = document.querySelector(`[data-col='${parseInt(column)}']`);
-      // console.log({ column, selectedColumnButton })
-      // check the cache first
+			// console.log({ column, selectedColumnButton })
+			// check the cache first
 			if (cache[`${order}${column}`]) {
 				// console.log('cache has been used');
 				// Since it is available, we will use the sorted array stored in cache
@@ -83,8 +97,8 @@ async function init() {
 			} else {
 				// Sort each row
 				sortedRows = rows.sort((a, b) => {
-          let aColumn = a.querySelector(`.c-table__td:nth-child(${column + 1})`);
-          let bColumn = b.querySelector(`.c-table__td:nth-child(${column + 1})`)
+					const aColumn = a.querySelector(`.c-table__td:nth-child(${column + 1})`);
+					const bColumn = b.querySelector(`.c-table__td:nth-child(${column + 1})`);
 					let aColumnContent;
 					let bColumnContent;
 					switch (column) {
@@ -103,9 +117,9 @@ async function init() {
 						case 9:
 							// If both values can be converted into a Date value, convert it
 							// Just splitting the date (MM/DD/YYYY) by / and using the year (YYYY) for sorting
-              aColumnContent = new Date(aColumn.textContent.trim());
+							aColumnContent = new Date(aColumn.textContent.trim());
 							bColumnContent = new Date(bColumn.textContent.trim());
-              // console.log({ aColumnContent, bColumnContent });
+							// console.log({ aColumnContent, bColumnContent });
 							// console.log('sorted by date');
 							break;
 						default:
@@ -113,14 +127,18 @@ async function init() {
 							aColumnContent = aColumn.textContent.trim();
 							bColumnContent = bColumn.textContent.trim();
 					}
-          // console.log({ aColumnContent, bColumnContent })
+					// console.log({ aColumnContent, bColumnContent })
 					// If both values can be converted into a Number value, convert it to a number
 					if (!Number.isNaN(parseInt(aColumnContent)) && !Number.isNaN(parseInt(bColumnContent))) {
 						aColumnContent = parseInt(aColumnContent);
 						bColumnContent = parseInt(bColumnContent);
 						// console.log('sorted by number');
 					}
-					return aColumnContent > bColumnContent ? 1 * directionModifier : bColumnContent > aColumnContent ? -1 * directionModifier : 0;
+					return aColumnContent > bColumnContent
+						? 1 * directionModifier
+						: bColumnContent > aColumnContent
+						? -1 * directionModifier
+						: 0;
 				});
 				// Store the asc/desc sorted rows in the cache for future reference
 				cache[`${order}${column}`] = sortedRows;
@@ -139,7 +157,7 @@ async function init() {
 
 			// Storing the asc/desc icon in the span.c-table__button--icon which is hidden from screen readers
 			selectedColumnButton.firstElementChild.classList.toggle('c-table__button--asc', asc);
-			selectedColumnButton.firstElementChild.classList.toggle('c-table__button--desc',!asc);
+			selectedColumnButton.firstElementChild.classList.toggle('c-table__button--desc', !asc);
 			// Add aria-sort="ascending/descending" to the selected column button parent element (<th scope='col' class='c-table__th'>)
 			selectedColumnButton.parentElement.setAttribute('aria-sort', order);
 			// Add newly sorted rows
@@ -153,16 +171,16 @@ async function init() {
 	 */
 	function renderHeaderColumns(columns) {
 		let headerRow = `<tr class='table_tr'>${columns.map((column, index) => {
-      return `
-      <th scope='col' class='c-table__th'>
-        <button class='c-table__button js-column-button' data-col='${index}'>
-          ${column}
-          <span class="c-table__button--icon" aria-hidden="true"></span>
-        </button>
-      </th>
-      `;
-    })
-    .join('')}</tr>`;
+			return `
+			<th scope='col' class='c-table__th'>
+				<button class='c-table__button js-column-button' data-col='${index}'>
+					${column}
+					<span class="c-table__button--icon" aria-hidden="true"></span>
+				</button>
+			</th>
+			`;
+		})
+		.join('')}</tr>`;
 		// console.log({headerRow});
 		return headerRow;
 	}
@@ -187,7 +205,7 @@ async function init() {
         <td class='c-table__td' data-label='FIRST'>${user?.name?.first}</td>
         <td class='c-table__td' data-label='LAST'>${user?.name?.last}</td>
         <td class='c-table__td c-table__td--image' data-label='IMAGE' data-id=${parseInt(index) + 1}><img alt='Photo of ${user?.name?.first} ${user?.name?.last}' class='c-table__image' loading='eager' src='${user?.picture?.thumbnail}' /></td>
-        <td class='c-table__td' data-label='PHONE'>${user?.cell.replace('-',' ')}</td>
+        <td class='c-table__td' data-label='PHONE'>${user?.cell.replace('-', ' ')}</td>
         <td class='c-table__td' data-label='ADDRESS'>${user?.location?.street?.number} ${user?.location?.street?.name}</td>
         <td class='c-table__td' data-label='CITY'>${user?.location?.city}</td>
         <td class='c-table__td' data-label='STATE'>${user?.location?.state}</td>
@@ -214,6 +232,91 @@ async function init() {
       </div>
     </div>
     `;
+	}
+	/**
+	 * Find the button with the corresponding data column index and focus on that element
+	 * @param   {Number}   columnIndex An index number that will be used
+	 * @return  {Boolean}  true Return the value true when the function ends
+	 */
+	function focusOnColumn(columnIndex) {
+		// console.log({col})
+		document.querySelector(`[data-col="${columnIndex}"]`).focus();
+		return true;
+	}
+	/**
+	 * Find the focused element and move the focus depending on the direction provided
+	 * @param   {String}   direction 'previous' 'next' the direction the the focus is moving
+	 * @return  {Boolean}  true Return true when the function ends
+	 */
+	function focusOnElement(direction) {
+		//add all elements we want to include in our selection
+		const focusableElements =
+			'a:not([disabled]), button:not([disabled]), input[type=text]:not([disabled]), [tabindex]:not([disabled]):not([tabindex="-1"])';
+		let focusable = [...document.querySelectorAll(focusableElements)];
+		const lastFocusableIndex = parseInt(focusable.length - 1);
+		const startOrFinish = direction === 'next' ? 0 : lastFocusableIndex;
+		const index = focusable.indexOf(document.activeElement);
+		// console.log({ index  })
+		// console.log({ focusable })
+		if (index === 0 && direction === 'previous') {
+			return focusOnColumn(lastFocusableIndex);
+		}
+		if (index === lastFocusableIndex && direction === 'next') {
+			return focusOnColumn(0);
+		}
+		if (index < 0 || index > lastFocusableIndex) {
+			return focusOnColumn(startOrFinish);
+		}
+		switch (direction) {
+			case 'next':
+				return focusOnColumn(index + 1);
+				break;
+			case 'previous':
+				return focusOnColumn(index - 1);
+				break;
+		}
+	}
+	/**
+	 * Event handler for key press events
+	 * @param {Object} event where event information is stored
+	 */
+	function keydownEventListener(event) {
+		let key = event.code;
+		// console.log({ shiftKey: event.shiftKey})
+		// console.log({ key: event.key, keyCode: event.keyCode})
+		// console.log({ windowEvent: window.event })
+		switch (key) {
+			case CODES.end:
+				event.preventDefault();
+				// Activate last tab
+				// console.log('end button pressed');
+				focusOnColumn(9);
+				break;
+			case CODES.home:
+				event.preventDefault();
+				// Activate first tab
+				// console.log('home button pressed');
+				focusOnColumn(0);
+				break;
+			case CODES.right:
+			case CODES.down:
+			case CODES.d:
+			case CODES.s:
+				event.preventDefault();
+				// Activate first tab
+				// console.log('home button pressed');
+				focusOnElement('next');
+				break;
+			case CODES.left:
+			case CODES.up:
+			case CODES.a:
+			case CODES.w:
+				event.preventDefault();
+				// Activate first tab
+				// console.log('home button pressed');
+				focusOnElement('previous');
+				break;
+		}
 	}
 
 	// 3. INITS & EVENT LISTENERS
@@ -255,6 +358,11 @@ async function init() {
 			const currentIsAscending = event.target.firstElementChild?.classList?.contains('c-table__button--asc');
 			sortTableByColumn(table, columnIndex, !currentIsAscending);
 		}
+		return false;
+	});
+
+	document.addEventListener('keydown', (event) => {
+		keydownEventListener(event);
 		return false;
 	});
 }
