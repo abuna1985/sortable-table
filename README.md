@@ -10,7 +10,7 @@
     <img src="assets/images/table-columns-icon.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h2 align="center">Sortable Columns Table</h2>
+  <h3 align="center">Sortable Columns Table</h3>
 
   <p align="center">
     <a href="https://abuna1985.github.io/sortable-columns-table/">View Demo</a>
@@ -33,7 +33,10 @@
 - [What I Learned](#what-i-learned)
   - [Web Accessability](#web-accessability)
   - [Performance Optimizations](#performance-optimizations)
+    - [Caching API Data in Session Storage](#caching-api-data-in-session-storage)
   - [Using Modern CSS](#using-modern-css)
+    - [CSS Custom Properties](#css-custom-properties)
+    - [BEM naming convention](#bem-naming-convention)
 - [Continued Development](#continued-development)
   - [Additional Features](#additional-features)
 - [Resources](#resources)
@@ -237,29 +240,126 @@ Create a `style.css`
 
 ### Performance Optimizations
 
-### Using Modern CSS
+#### Caching API Data in Session Storage
 
-Use this section to recap over some of your major learnings while working through this project. Writing these out and providing code samples of areas you want to highlight is a great way to reinforce your own knowledge.
+In most API fetching demos, the API call is made as the page is rendered. I decided to use Session Storage to store the initial API call data. Then use the data from session storage from that render of the page on. Once the user closes out of the window, the data from session storage is removed.
 
-To see how you can add code snippets, see below:
+325-343
 
-```html
-<h1>Some HTML code I'm proud of</h1>
-```
-
-```css
-.proud-of-this-css {
-	color: papayawhip;
+```js
+tableBody.innerHTML = renderLoadingContainer();
+if (sessionStorage.getItem('userdata')) {
+	// Use the data from session storage
+	results = JSON.parse(sessionStorage.getItem('userdata'));
+	// console.log('session storage used');
+	// console.log('--------------------');
+} else {
+	// fetch the data from the random user API
+	try {
+		results = await fetchUserData(endpointURL);
+		// console.log({results});
+		// Store the results in the Session Storage as 'userdata'
+		sessionStorage.setItem('userdata', JSON.stringify(results));
+		// console.log('fetch call made');
+		// console.log('Session storage used');
+		// console.log('--------------------');
+	} catch (error) {
+		console.log('Error:', error);
+	}
 }
 ```
 
-```js
-const proudOfThisFunc = () => {
-	console.log('🎉');
-};
+### Using Modern CSS
+
+#### CSS Custom Properties
+
+This [Kevin Powell YouTube video on CSS custom properties](https://youtu.be/5QIiWIoCmsc) really helped me better understand how to use these properties. Here is an example. I created 5 custom properties in my `body` so they are accessible in all selectors.
+
+```css
+body {
+	/*Custom Properties*/
+	--header-background-color: #0074d9;
+	--main-background-color: #ffffff;
+	--main-background-accent-color: #dddddd;
+	--main-text-color: #111111;
+	--error-text-color: #ff4136;
+
+	color: var(--main-text-color);
+	font-family: sans-serif;
+	line-height: 1.25;
+}
 ```
 
-If you want more help with writing markdown, we'd recommend checking out [The Markdown Guide](https://www.markdownguide.org/) to learn more.
+Now I have a custom property called `--main-text-color` that stores the hex code of black (`#111111`). But since my button is going to be blue, I would like to use white (`#ffffff`). Rather than create another custom property, I can overwrite the property within a selector and use the same property name like so:
+
+```css
+.c-table__button {
+	--main-text-color: #ffffff;
+
+	align-items: stretch;
+	background-color: var(--header-background-color);
+  ...
+```
+
+Now the text color within my button will be white (`#ffffff`)
+
+#### BEM naming convention
+
+After reading the [namespace section of this Smashing Magazine article on mistakes to avoid using BEM](https://www.smashingmagazine.com/2016/06/battling-bem-extended-edition-common-problems-and-how-to-avoid-them/#2-should-i-be-namespacing), I decided to apply the same BEM prefix namespacing as in the <cite>Smashing Magazine</cite> article.
+
+<blockquote cite="https://www.smashingmagazine.com/2016/06/battling-bem-extended-edition-common-problems-and-how-to-avoid-them/#2-should-i-be-namespacing">
+  <table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Prefix</th>
+      <th>Examples</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Component</td>
+      <td><em>c-</em></td>
+      <td><em>c-card</em><br><em>c-checklist</em></td>
+      <td>Form the backbone of an application and contain all of the cosmetics for a standalone component.</td>
+    </tr>
+    <tr>
+      <td>Layout module</td>
+      <td><em>l-</em></td>
+      <td><em>l-grid</em><br><em>l-container</em></td>
+      <td>These modules have no cosmetics and are purely used to position <em>c-</em> components and structure an application’s layout.</td>
+    </tr>
+    <tr>
+      <td>Helpers</td>
+      <td><em>h-</em></td>
+      <td><em>h-show</em><br><em>h-hide</em></td>
+      <td>These utility classes have a single function, often using <em>!important</em> to boost their specificity. (Commonly used for positioning or visibility.)</td>
+    </tr>
+    <tr>
+      <td>States</td>
+      <td><em>is-</em><br><em>has-</em></td>
+      <td><em>is-visible</em><br><em>has-loaded</em></td>
+      <td>Indicate different states that a c- component can have.</td>
+    </tr>
+    <tr>
+      <td>JavaScript hooks</td>
+      <td><em>js-</em></td>
+      <td><em>js-tab-switcher</em></td>
+      <td>These indicate that JavaScript behavior is attached to a component. No styles should be associated with them; they are purely used to enable easier manipulation with script.</td>
+    </tr>
+  </tbody>
+  </table>
+  <cite>&mdash; David Berner</cite>
+</blockquote>
+
+**Source of namespacing:** [Harry Robert - More Transparent UI Code with Namespaces](https://csswizardry.com/2015/03/more-transparent-ui-code-with-namespaces/)
+
+As a result I used the following class names:
+
+- `c-header`, `c-table`
+- `.l-table-container`, `.l-loading-container`
+- `is-loading`, `has-error`
 
 [Back to Top](#table-of-contents)
 
@@ -267,7 +367,8 @@ If you want more help with writing markdown, we'd recommend checking out [The Ma
 
 ### Additional Features
 
-1. In tablet/mobile view, add tab functionality to focus on each user box
+1. In tablet/mobile view, add tab functionality to focus on each card full of data
+2. Add an input to search on the table and highlight
 
 [Back to Top](#table-of-contents)
 
