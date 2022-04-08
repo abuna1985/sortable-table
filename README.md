@@ -275,18 +275,18 @@ if (sessionStorage.getItem('userdata')) {
 
 This [Kevin Powell YouTube video on CSS custom properties](https://youtu.be/5QIiWIoCmsc) really helped me better understand how to use these properties. Here is an example. I created 5 custom properties in my `body` so they are accessible in all selectors.
 
-```css
+```
 body {
-	/*Custom Properties*/
-	--header-background-color: #0074d9;
-	--main-background-color: #ffffff;
-	--main-background-accent-color: #dddddd;
-	--main-text-color: #111111;
-	--error-text-color: #ff4136;
+/*Custom Properties*/
+--header-background-color: #0074d9;
+--main-background-color: #ffffff;
+--main-background-accent-color: #dddddd;
+--main-text-color: #111111;
+--error-text-color: #ff4136;
 
-	color: var(--main-text-color);
-	font-family: sans-serif;
-	line-height: 1.25;
+color: var(--main-text-color);
+font-family: sans-serif;
+line-height: 1.25;
 }
 ```
 
@@ -294,11 +294,11 @@ Now I have a custom property called `--main-text-color` that stores the hex code
 
 ```css
 .c-table__button {
-	--main-text-color: #ffffff;
+--main-text-color: #ffffff;
 
-	align-items: stretch;
-	background-color: var(--header-background-color);
-  ...
+align-items: stretch;
+background-color: var(--header-background-color);
+...
 ```
 
 Now the text color within my button will be white (`#ffffff`)
