@@ -249,23 +249,23 @@ In most API fetching demos, the API call is made as the page is rendered. I deci
 ```js
 tableBody.innerHTML = renderLoadingContainer();
 if (sessionStorage.getItem('userdata')) {
-	// Use the data from session storage
-	results = JSON.parse(sessionStorage.getItem('userdata'));
-	// console.log('session storage used');
-	// console.log('--------------------');
+// Use the data from session storage
+results = JSON.parse(sessionStorage.getItem('userdata'));
+// console.log('session storage used');
+// console.log('--------------------');
 } else {
-	// fetch the data from the random user API
-	try {
-		results = await fetchUserData(endpointURL);
-		// console.log({results});
-		// Store the results in the Session Storage as 'userdata'
-		sessionStorage.setItem('userdata', JSON.stringify(results));
-		// console.log('fetch call made');
-		// console.log('Session storage used');
-		// console.log('--------------------');
-	} catch (error) {
-		console.log('Error:', error);
-	}
+// fetch the data from the random user API
+try {
+results = await fetchUserData(endpointURL);
+// console.log({results});
+// Store the results in the Session Storage as 'userdata'
+sessionStorage.setItem('userdata', JSON.stringify(results));
+// console.log('fetch call made');
+// console.log('Session storage used');
+// console.log('--------------------');
+} catch (error) {
+  console.log('Error:', error);
+}
 }
 ```
 
@@ -275,7 +275,7 @@ if (sessionStorage.getItem('userdata')) {
 
 This [Kevin Powell YouTube video on CSS custom properties](https://youtu.be/5QIiWIoCmsc) really helped me better understand how to use these properties. Here is an example. I created 5 custom properties in my `body` so they are accessible in all selectors.
 
-```
+```css
 body {
 /*Custom Properties*/
 --header-background-color: #0074d9;
