@@ -10,10 +10,12 @@
     <img src="assets/images/table-columns-icon.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Sortable Columns Table</h3>
+  <h3 align="center">Sortable Columns HTML Table</h3>
 
   <p align="center">
-    <a href="https://abuna1985.github.io/sortable-columns-table/">View Demo</a>
+    <strong>
+      <a href="https://abuna1985.github.io/sortable-columns-table/">View Demo</a>
+    </strong>
   </p>
 </div>
 
@@ -33,6 +35,7 @@
 - [What I Learned](#what-i-learned)
   - [Web Accessability](#web-accessability)
   - [Performance Optimizations](#performance-optimizations)
+    - [Semantic HTML](#semantic-html)
     - [Caching API Data in Session Storage](#caching-api-data-in-session-storage)
   - [Using Modern CSS](#using-modern-css)
     - [CSS Custom Properties](#css-custom-properties)
@@ -145,6 +148,7 @@ Read the [API documentation](https://randomuser.me/documentation) to find out mo
 
 - [x] See a <code>loading</code> state when the page initially renders
 - [x] See an HTML <code>table</code> when the data is successfully loaded
+- [x] See all the HTML <code>table</code> data in `mobile` and `tablet` view
 - [x] See an <code>error</code> message within the table body if it is not working
 - [x] Be able to <code>click</code> on a column, see a visual cue that the column has been selected
 - [x] Be able to use the following keyboard keys to control:
@@ -174,7 +178,7 @@ Since the requirements were fetching API data and rendering a table, I approache
 
 ### 1. HTML
 
-Create an `index.html` file and fill it with the elements that were not going to be changing like the `<header>` and root `<table>` element. Add BEM (Block Element Modifier) naming convention for adding class names.
+Create an `index.html` file and fill it with the elements that were not going to be changing like the `<header>` and root `<table>` element. Add BEM (Block Element Modifier) naming convention for adding class names (i.e `c-header` and `c-table`).
 
 ### 2. JavaScript
 
@@ -240,34 +244,16 @@ Create a `style.css`
 
 ### Performance Optimizations
 
+#### Semantic HTML
+
+After reviewing the [Deque University Sortable Table Example](https://dequeuniversity.com/library/aria/table-sortable)
+
 #### Caching API Data in Session Storage
 
-In most API fetching demos, the API call is made as the page is rendered. I decided to use Session Storage to store the initial API call data. Then use the data from session storage from that render of the page on. Once the user closes out of the window, the data from session storage is removed.
+In most API fetching demos, the API call is made as the page is rendered. I decided to use Session Storage to store the initial API call data. Then use the data from session storage from that render of the page on. Once the user closes out the window tab, the data from session storage is removed. Below is the snippet where I added session storage logic:
 
-325-343
+https://github.com/abuna1985/sortable-table/blob/5217ffb0c52d9339c694ecd76b208a1203660631/assets/js/script.js#L324-L343
 
-```js
-tableBody.innerHTML = renderLoadingContainer();
-if (sessionStorage.getItem('userdata')) {
-// Use the data from session storage
-results = JSON.parse(sessionStorage.getItem('userdata'));
-// console.log('session storage used');
-// console.log('--------------------');
-} else {
-// fetch the data from the random user API
-try {
-results = await fetchUserData(endpointURL);
-// console.log({results});
-// Store the results in the Session Storage as 'userdata'
-sessionStorage.setItem('userdata', JSON.stringify(results));
-// console.log('fetch call made');
-// console.log('Session storage used');
-// console.log('--------------------');
-} catch (error) {
-  console.log('Error:', error);
-}
-}
-```
 
 ### Using Modern CSS
 
@@ -355,7 +341,7 @@ After reading the [namespace section of this Smashing Magazine article on mistak
 
 **Source of namespacing:** [Harry Robert - More Transparent UI Code with Namespaces](https://csswizardry.com/2015/03/more-transparent-ui-code-with-namespaces/)
 
-As a result I used the following class names:
+As a result I used the following block class names:
 
 - `c-header`, `c-table`
 - `.l-table-container`, `.l-loading-container`
@@ -411,6 +397,10 @@ As a result I used the following class names:
 
 ## Acknowledgments
 
-This is where you can give a hat tip to anyone who helped you out on this project. Perhaps you worked in a team or got some inspiration from someone else's solution. This is the perfect place to give them some credit.
+Shout out/kudos go to:
+  - @sw-yx, @techieEliot, @rayning0, and @amhayslip pushing the dev community to learn and grow in public. 
+  - @kevin-powell for making me smarter about CSS 
+  - @cferdinandi for making me smarter about JavaScript.
+
 
 [Back to Top](#table-of-contents)
