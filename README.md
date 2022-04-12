@@ -34,18 +34,18 @@
 - [Built with](#built-with)
 - [What I Learned](#what-i-learned)
   - [Web Accessability](#web-accessability)
-  - [Performance Optimizations](#performance-optimizations)
     - [Semantic HTML](#semantic-html)
+  - [Performance Optimizations](#performance-optimizations)
     - [Caching API Data in Session Storage](#caching-api-data-in-session-storage)
   - [Using Modern CSS](#using-modern-css)
     - [CSS Custom Properties](#css-custom-properties)
     - [BEM naming convention](#bem-naming-convention)
-- [Continued Development](#continued-development)
-  - [Additional Features](#additional-features)
+- [Additional Features](#additional-features)
 - [Resources](#resources)
   - [HTML links](#html-links)
   - [CSS links](#css-links)
   - [JavaScript Links](#javascript-links)
+  - [Additional Links](#additional-links)
 - [Author](#author)
 - [Acknowledgments](#acknowledgments)
 
@@ -186,40 +186,40 @@ Create a `script.js` and write out the following functions:
 
 - fetch data from the Random User API
   - render the contents of the `<table>` element (`<th>`, `<tr>`, `<td>`, etc.) with the Random User API data
-    - Create Event Listeners:
-      - **Click**
-        - `<button>` in Column header (`<th>`)
-          - when clicked, it sorts the table ascending/descending order and rerenders the page with the results
-      - **Keydown**
-        - `left arrow`, `up arrow`, `a`, `w`
-          - Move the focus to the **previous** HTML element with a `tabindex` attribute
-        - `right arrow`, `down arrow`, `d`, `s`
-          - Move the focus to the **next** HTML element with a `tabindex` attribute
-        - `home`
-          - Move the focus to the **first** HTML element with a `tabindex` attribute
-        - `end`
-          - Move the focus to the **last** HTML element with a `tabindex` attribute
+- Create Event Listeners:
+  - **Click**
+    - `<button>` in Column header (`<th>`)
+    - when clicked, it sorts the table ascending/descending order and rerenders the page with the results
+  - **Keydown**
+    - `left arrow`, `up arrow`, `a`, `w`
+      - Move the focus to the **previous** HTML element with a `tabindex` attribute
+    - `right arrow`, `down arrow`, `d`, `s`
+      - Move the focus to the **next** HTML element with a `tabindex` attribute
+    - `home`
+      - Move the focus to the **first** HTML element with a `tabindex` attribute
+    - `end`
+      - Move the focus to the **last** HTML element with a `tabindex` attribute
 
 ### 3. CSS
 
-Create a `style.css`
+1. Add [Normalize.css](https://nicolasgallagher.com/about-normalize-css/) to reset the CSS browser defaults
+2. Create a `style.css` and add styles to:
 
-- Add styles to
-  - Header - `.c-header`
-    - Header Title - `.c-header__title`
-    - Header Subtitle - `.c-header__subtitle`
-  - Table - `c-table`
-    - table header
-      - header cell (th) - `.c-table__th`
-        - button - `.c-table__button`
-    - table body
-      - table row (tr) `.c-table__tr`
-        - table data (td) `.c-table__td`
-  - Loading Screen - `.l-loading-container` `.is-loading`
-  - Animations
-    - `move` keyframe animation
-    - `grow` keyframe animation
-  - Mobile view styling
+- Header - `.c-header`
+  - Header Title - `.c-header__title`
+  - Header Subtitle - `.c-header__subtitle`
+- Table - `c-table`
+  - table header - `c-table__head`
+    - header cell (th) - `.c-table__th`
+      - button - `.c-table__button`
+  - table body  - `c-table__body`
+    - table row (tr) `.c-table__tr`
+      - table data (td) `.c-table__td`
+- Loading Screen - `.l-loading-container` `.is-loading`
+- Animations
+  - `move` keyframe animation
+  - `grow` keyframe animation
+- Mobile view styling `@media screen and (max-width: 768px)`
 
 [Back to Top](#table-of-contents)
 
@@ -242,11 +242,12 @@ Create a `style.css`
 
 ### Web Accessability
 
-### Performance Optimizations
-
 #### Semantic HTML
 
 After reviewing the [Deque University Sortable Table Example](https://dequeuniversity.com/library/aria/table-sortable)
+
+
+### Performance Optimizations
 
 #### Caching API Data in Session Storage
 
@@ -259,39 +260,19 @@ https://github.com/abuna1985/sortable-table/blob/5217ffb0c52d9339c694ecd76b208a1
 
 #### CSS Custom Properties
 
-This [Kevin Powell YouTube video on CSS custom properties](https://youtu.be/5QIiWIoCmsc) really helped me better understand how to use these properties. Here is an example. I created 5 custom properties in my `body` so they are accessible in all selectors.
+This [Kevin Powell YouTube video on CSS custom properties](https://youtu.be/5QIiWIoCmsc) really helped me better understand how to use these properties. Here is an example. I created 5 custom properties in my `body` selector so I can use the custom properties within all nested elements
 
-```css
-body {
-/*Custom Properties*/
---header-background-color: #0074d9;
---main-background-color: #ffffff;
---main-background-accent-color: #dddddd;
---main-text-color: #111111;
---error-text-color: #ff4136;
+https://github.com/abuna1985/sortable-table/blob/3f0fa713d2c01c93a222c76782de04a291a5cade/assets/css/style.css#L2-L13
 
-color: var(--main-text-color);
-font-family: sans-serif;
-line-height: 1.25;
-}
-```
+Now I have a custom property called `--main-text-color` that stores the hex code of black (`#111111`). But since my button is going to be blue, I would like my text color to be white (`#ffffff`). Rather than create another custom property, I can overwrite the property within a selector and use the same property name like so:
 
-Now I have a custom property called `--main-text-color` that stores the hex code of black (`#111111`). But since my button is going to be blue, I would like to use white (`#ffffff`). Rather than create another custom property, I can overwrite the property within a selector and use the same property name like so:
-
-```css
-.c-table__button {
---main-text-color: #ffffff;
-
-align-items: stretch;
-background-color: var(--header-background-color);
-...
-```
+https://github.com/abuna1985/sortable-table/blob/3f0fa713d2c01c93a222c76782de04a291a5cade/assets/css/style.css#L81-L87
 
 Now the text color within my button will be white (`#ffffff`)
 
 #### BEM naming convention
 
-After reading the [namespace section of this Smashing Magazine article on mistakes to avoid using BEM](https://www.smashingmagazine.com/2016/06/battling-bem-extended-edition-common-problems-and-how-to-avoid-them/#2-should-i-be-namespacing), I decided to apply the same BEM prefix namespacing as in the <cite>Smashing Magazine</cite> article.
+After reading the [namespace section of this Smashing Magazine article on mistakes to avoid using BEM](https://www.smashingmagazine.com/2016/06/battling-bem-extended-edition-common-problems-and-how-to-avoid-them/#2-should-i-be-namespacing), I decided to apply the same BEM prefix namespacing as in the <cite>Smashing Magazine</cite> article. Below is the table that shows the prefix description and examples from the article.
 
 <blockquote cite="https://www.smashingmagazine.com/2016/06/battling-bem-extended-edition-common-problems-and-how-to-avoid-them/#2-should-i-be-namespacing">
   <table>
@@ -343,15 +324,14 @@ After reading the [namespace section of this Smashing Magazine article on mistak
 
 As a result I used the following block class names:
 
-- `c-header`, `c-table`
-- `.l-table-container`, `.l-loading-container`
-- `is-loading`, `has-error`
+- Components - `c-header`, `c-table`
+  - Elements - `c-header__title`, `c-table__td`
+- Layout - `.l-table-container`, `.l-loading-container`
+- States - `is-loading`, `has-error`
 
 [Back to Top](#table-of-contents)
 
-## Continued Development
-
-### Additional Features
+## Additional Features
 
 1. In tablet/mobile view, add tab functionality to focus on each card full of data
 2. Add an input to search on the table and highlight
@@ -373,6 +353,8 @@ As a result I used the following block class names:
 
 - [MDN Docs - table-layout](https://developer.mozilla.org/en-US/docs/Web/CSS/table-layout)
 - [LogRocket- CSS animated page loading](https://blog.logrocket.com/animated-page-loaders-css/)
+- [Smashing Magazine - David Berner - Battling BEM CSS: 10 Common Problems And How To Avoid Them](https://www.smashingmagazine.com/2016/06/battling-bem-extended-edition-common-problems-and-how-to-avoid-them/)
+- [CSS Wizardry - Harry Robert - More Transparent UI Code with Namespaces](https://csswizardry.com/2015/03/more-transparent-ui-code-with-namespaces/)
 
 ### JavaScript Links
 
@@ -384,6 +366,10 @@ As a result I used the following block class names:
 - [Go Make Things - Chris Ferndinandi - JavaScript format date helper function](https://vanillajstoolkit.com/helpers/formatdate/)
 - [Mastering JS - Date object](https://masteringjs.io/tutorials/fundamentals/typeof-date)
 - [freeCodeCamp - Understanding JavaScript Memoization](https://www.freecodecamp.org/news/understanding-memoize-in-javascript-51d07d19430e/)
+
+### Additional Links
+
+- []()
 
 [Back to Top](#table-of-contents)
 
