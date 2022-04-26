@@ -1,12 +1,12 @@
 [![made-with-javascript](https://img.shields.io/badge/Made%20with-JavaScript-1f425f.svg)](https://www.javascript.com)
-[![GitHub commits](https://badgen.net/github/commits/abuna1985/sortable-columns-table/main/)](https://GitHub.com/abuna1985/sortable-columns-table/commits/)
-[![GitHub stars](https://badgen.net/github/stars/abuna1985/sortable-columns-table)](https://GitHub.com/abuna1985/sortable-columns-table/stargazers/)
-[![GitHub watchers](https://badgen.net/github/watchers/abuna1985/sortable-columns-table)](https://GitHub.com/abuna1985/sortable-columns-tables/watchers/)
-[![GitHub license](https://img.shields.io/github/license/abuna1985/sortable-columns-table?color="blue")](https://github.com/abuna1985/sortable-columns-tables/blob/main/LICENSE)
+[![GitHub commits](https://badgen.net/github/commits/abuna1985/sortable-table/main/)](https://GitHub.com/abuna1985/sortable-table/commits/)
+[![GitHub stars](https://badgen.net/github/stars/abuna1985/sortable-table)](https://GitHub.com/abuna1985/sortable-table/stargazers/)
+[![GitHub watchers](https://badgen.net/github/watchers/abuna1985/sortable-table)](https://GitHub.com/abuna1985/sortable-tables/watchers/)
+[![GitHub license](https://img.shields.io/github/license/abuna1985/sortable-table?color="blue")](https://github.com/abuna1985/sortable-tables/blob/main/LICENSE)
 <br />
 
 <div align="center">
-  <a href="https://abuna1985.github.io/sortable-columns-table/">
+  <a href="https://abuna1985.github.io/sortable-table/">
     <img src="assets/images/table-columns-icon.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -14,7 +14,7 @@
 
   <p align="center">
     <strong>
-      <a href="https://abuna1985.github.io/sortable-columns-table/">View Demo</a>
+      <a href="https://abuna1985.github.io/sortable-table/">View Demo</a>
     </strong>
   </p>
 </div>
@@ -272,7 +272,7 @@ Now the text color within my button will be white (`#ffffff`)
 
 #### BEM naming convention
 
-After reading the [namespace section of this Smashing Magazine article on mistakes to avoid using BEM](https://www.smashingmagazine.com/2016/06/battling-bem-extended-edition-common-problems-and-how-to-avoid-them/#2-should-i-be-namespacing), I decided to apply the same BEM prefix namespacing as in the <cite>Smashing Magazine</cite> article. Below is the table that shows the prefix description and examples from the article.
+After reading the [namespace section of this Smashing Magazine article on mistakes to avoid using BEM (Block, Element, Modifier)](https://www.smashingmagazine.com/2016/06/battling-bem-extended-edition-common-problems-and-how-to-avoid-them/#2-should-i-be-namespacing), I decided to apply the same BEM prefix namespacing as in the <cite>Smashing Magazine</cite> article. Below is the table that shows the prefix description and examples from the article.
 
 <blockquote cite="https://www.smashingmagazine.com/2016/06/battling-bem-extended-edition-common-problems-and-how-to-avoid-them/#2-should-i-be-namespacing">
   <table>
@@ -324,10 +324,10 @@ After reading the [namespace section of this Smashing Magazine article on mistak
 
 As a result I used the following block class names:
 
-- Components - `c-header`, `c-table`
-  - Elements - `c-header__title`, `c-table__td`
-- Layout - `.l-table-container`, `.l-loading-container`
-- States - `is-loading`, `has-error`
+- **Components** - `c-header`, `c-table`
+  - **Elements** - `c-header__title`, `c-table__td`
+- **Layout** - `.l-table-container`, `.l-loading-container`
+- **States** - `is-loading`, `has-error`
 
 [Back to Top](#table-of-contents)
 
@@ -383,10 +383,9 @@ As a result I used the following block class names:
 
 ## Acknowledgments
 
-Shout out/kudos go to:
-  - @sw-yx, @techieEliot, @rayning0, and @amhayslip pushing the dev community to learn and grow in public. 
-  - @kevin-powell for making me smarter about CSS 
-  - @cferdinandi for making me smarter about JavaScript.
+- @sw-yx @techieEliot @rayning0 and @amhayslip pushing the dev community (including myself) to learn and grow in public. 
+- @kevin-powell for making me smarter about CSS 
+- @cferdinandi for making me smarter about JavaScript.
 
 
 [Back to Top](#table-of-contents)
