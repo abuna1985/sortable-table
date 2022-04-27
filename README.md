@@ -34,9 +34,10 @@
 - [Built with](#built-with)
 - [What I Learned](#what-i-learned)
   - [Web Accessability](#web-accessability)
-    - [Semantic HTML](#semantic-html)
+    - [Semantic HTML & ARIA attributes](#semantic-html--aria-attributes)
   - [Performance Optimizations](#performance-optimizations)
-    - [Caching API Data in Session Storage](#caching-api-data-in-session-storage)
+    - [Caching API Data in `SessionStorage`](#caching-api-data-in-sessionstorage)
+    - [Caching Sorted Tables in the Event Listener (Memoization)](#caching-sorted-tables-in-the-event-listener-memoization)
   - [Using Modern CSS](#using-modern-css)
     - [CSS Custom Properties](#css-custom-properties)
     - [BEM naming convention](#bem-naming-convention)
@@ -45,7 +46,6 @@
   - [HTML links](#html-links)
   - [CSS links](#css-links)
   - [JavaScript Links](#javascript-links)
-  - [Additional Links](#additional-links)
 - [Author](#author)
 - [Acknowledgments](#acknowledgments)
 
@@ -62,7 +62,7 @@ This project is a simple responsive single-page which takes data from the Random
 <details>
   <summary><strong>Click here</strong> to see what happens when the <em>columns are clicked on</em></summary>
 
-Some stuff
+  <img src="./assets/images/sortable-table-click.gif" alt="sortable table click demo gif" />
 
 </details>
 <br />
@@ -70,7 +70,15 @@ Some stuff
 <details>
   <summary><strong>Click here</strong> to see what happens when the <code>tab key</code> and <code>shift+tab key</code> is pressed</summary>
 
-Some more stuff
+  <img src="./assets/images/sortable-table-tab-enter.gif" alt="sortable table tab/enter demo gif" />
+
+</details>
+<br>
+
+<details>
+  <summary><strong>Click here</strong> to see the Web Accessibility Evaluation Tool (WAVE) report summary</summary>
+
+  <img src="./assets/images/sortable-table-wave-report-summary.jpg" alt="Wave Report: 11 Features, 26 Structural Elements, 132 ARIA labels" />
 
 </details>
 <br>
@@ -242,19 +250,74 @@ Create a `script.js` and write out the following functions:
 
 ### Web Accessability
 
-#### Semantic HTML
+#### Semantic HTML & ARIA attributes
 
-After reviewing the [Deque University Sortable Table Example](https://dequeuniversity.com/library/aria/table-sortable)
+After reviewing the [Deque University Sortable Table Example](https://dequeuniversity.com/library/aria/table-sortable), it looks like making a `<table>` with the appropriate nested table elements (`<thead>`, `<tbody>` `<th>`, `<tr>`,`<td>`).
 
+Here is a skeleton example with the recommended ARIA attributes:
+
+```html
+<table role="grid" aria-readonly="true">
+  <thead>
+    <tr role="row">
+      <th role="columnheader" scope="col">col 1<th>
+      <th role="columnheader" scope="col">col 2<th>
+      <th role="columnheader" scope="col">col 3<th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr role="row">
+      <th scope="row" role="rowheader">data 1</th>
+      <td role="gridcell">data 2</td>
+      <td role="gridcell">data 3</td>
+    <tr>
+  </tbody>
+</table>
+```
+
+For assistive technology, It is preferred that the selected `<th>` have the following attribute to let the reader know which order the column is sorted:
+- `aria-sort="ascending"` 
+- `aria-sort="descending"`
+
+**NOTE:** some ARIA attributes may be built into the semantic table elements. I found conflicting information and decided to add the ARIA attributes to ensure they are available to any assistive technologies.
+
+[Back to Top](#table-of-contents)
 
 ### Performance Optimizations
 
-#### Caching API Data in Session Storage
+#### Caching API Data in `SessionStorage`
 
-In most API fetching demos, the API call is made as the page is rendered. I decided to use Session Storage to store the initial API call data. Then use the data from session storage from that render of the page on. Once the user closes out the window tab, the data from session storage is removed. Below is the snippet where I added session storage logic:
+In most API fetching demos, the API call is made as the page is rendered. I decided to use `SessionStorage` to store the initial API call data. After the initial fetch, the table will pull the data directly from `SessionStorage`.
+
+Once the user closes out the window tab, the data from session storage is removed. Below is the snippet where I added session storage logic:
 
 https://github.com/abuna1985/sortable-table/blob/5217ffb0c52d9339c694ecd76b208a1203660631/assets/js/script.js#L324-L343
 
+#### Caching Sorted Tables in the Event Listener (Memoization)
+
+I had to demonstrate memoization for a few technical interviews recently. I wanted to implement memoization so that the table did not need to run a sort function every time the column button is clicked.
+
+So I initially create a cache within the event listener function and return a function that will be used when the column button is clicked. 
+
+https://github.com/abuna1985/sortable-table/blob/f38a11e78125b989fc2ae1443b12669f8a1f9741/assets/js/script.js#L69-L79
+
+Win the return function, we will try to access the cache to see if `cache[`${order}${column}`]` (example `cache['ascending1']` for column 1 in ascending order). if it does not exist, we will perform the sort.
+
+https://github.com/abuna1985/sortable-table/blob/f38a11e78125b989fc2ae1443b12669f8a1f9741/assets/js/script.js#L93-L99
+
+After the sort is performed, we will store it in the `cache` object for future reference.
+
+https://github.com/abuna1985/sortable-table/blob/f38a11e78125b989fc2ae1443b12669f8a1f9741/assets/js/script.js#L144
+
+we will call `memoizedCache` and name the returning function `sortByTableColumn`
+
+https://github.com/abuna1985/sortable-table/blob/f38a11e78125b989fc2ae1443b12669f8a1f9741/assets/js/script.js#L69
+
+We then call `sortByTableColumn` in the click listener. Notice I create an event listener on the document and add a conditional for make sure the button with a class `js-column-button` is the only element that the sorting function will work.
+
+https://github.com/abuna1985/sortable-table/blob/f38a11e78125b989fc2ae1443b12669f8a1f9741/assets/js/script.js#L350-L362
+
+[Back to Top](#table-of-contents)
 
 ### Using Modern CSS
 
@@ -264,7 +327,7 @@ This [Kevin Powell YouTube video on CSS custom properties](https://youtu.be/5QIi
 
 https://github.com/abuna1985/sortable-table/blob/3f0fa713d2c01c93a222c76782de04a291a5cade/assets/css/style.css#L2-L13
 
-Now I have a custom property called `--main-text-color` that stores the hex code of black (`#111111`). But since my button is going to be blue, I would like my text color to be white (`#ffffff`). Rather than create another custom property, I can overwrite the property within a selector and use the same property name like so:
+Now I have a custom property called `--main-text-color` that stores the hex code of black (`#111111`). But since my button is going to be blue, I would like my text color to be white (`#ffffff`). Rather than create another custom property, I can overwrite (or locally scope) the property within a selector and use the same property name like so:
 
 https://github.com/abuna1985/sortable-table/blob/3f0fa713d2c01c93a222c76782de04a291a5cade/assets/css/style.css#L81-L87
 
@@ -367,9 +430,6 @@ As a result I used the following block class names:
 - [Mastering JS - Date object](https://masteringjs.io/tutorials/fundamentals/typeof-date)
 - [freeCodeCamp - Understanding JavaScript Memoization](https://www.freecodecamp.org/news/understanding-memoize-in-javascript-51d07d19430e/)
 
-### Additional Links
-
-- []()
 
 [Back to Top](#table-of-contents)
 
