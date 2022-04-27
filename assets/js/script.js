@@ -170,9 +170,9 @@ async function init() {
 	 * @return  {String}  headerRow The HTML string template of the table header columns
 	 */
 	function renderHeaderColumns(columns) {
-		let headerRow = `<tr class='table_tr'>${columns.map((column, index) => {
+		let headerRow = `<tr class='table_tr' role='row'>${columns.map((column, index) => {
 			return `
-			<th scope='col' class='c-table__th'>
+			<th role='columnheader' scope='col' class='c-table__th'>
 				<button class='c-table__button js-column-button' data-col='${index}'>
 					${column}
 					<span class="c-table__button--icon" aria-hidden="true"></span>
@@ -193,24 +193,24 @@ async function init() {
 		if (!userData.length) {
 			// console.log({userData});
 			return `
-      <tr class='c-table__tr'>
+      <tr class='c-table__tr' role='row'>
         <td colspan='10' class='has-error c-table__td'>No data available. Please try again later.</td>
       </tr>
       `;
 		}
 		let rows = userData.map((user, index) => {
 			return `
-      <tr class='c-table__tr'>
-        <th class='c-table__td c-table__td--font-300' data-label='ID' scope='row'>${parseInt(index) + 1}</th>
-        <td class='c-table__td' data-label='FIRST'>${user?.name?.first}</td>
-        <td class='c-table__td' data-label='LAST'>${user?.name?.last}</td>
-        <td class='c-table__td c-table__td--image' data-label='IMAGE' data-id=${parseInt(index) + 1}><img alt='Photo of ${user?.name?.first} ${user?.name?.last}' class='c-table__image' loading='eager' src='${user?.picture?.thumbnail}' /></td>
-        <td class='c-table__td' data-label='PHONE'>${user?.cell.replace('-', ' ')}</td>
-        <td class='c-table__td' data-label='ADDRESS'>${user?.location?.street?.number} ${user?.location?.street?.name}</td>
-        <td class='c-table__td' data-label='CITY'>${user?.location?.city}</td>
-        <td class='c-table__td' data-label='STATE'>${user?.location?.state}</td>
-        <td class='c-table__td' data-label='ZIP'>${user?.location?.postcode}</td>
-        <td class='c-table__td' data-label='MEMBER SINCE'>${formatDate(user?.registered?.date)}</td>
+      <tr class='c-table__tr' role='row'>
+        <th class='c-table__td c-table__td--font-300' data-label='ID' scope='row' role='rowheader'>${parseInt(index) + 1}</th>
+        <td class='c-table__td' data-label='FIRST' role='gridcell'>${user?.name?.first}</td>
+        <td class='c-table__td' data-label='LAST' role='gridcell'>${user?.name?.last}</td>
+        <td class='c-table__td c-table__td--image' data-label='IMAGE' data-id=${parseInt(index) + 1} role='gridcell'><img alt='Photo of ${user?.name?.first} ${user?.name?.last}' class='c-table__image' loading='eager' src='${user?.picture?.thumbnail}' /></td>
+        <td class='c-table__td' data-label='PHONE' role='gridcell'>${user?.cell.replace('-', ' ')}</td>
+        <td class='c-table__td' data-label='ADDRESS' role='gridcell'>${user?.location?.street?.number} ${user?.location?.street?.name}</td>
+        <td class='c-table__td' data-label='CITY' role='gridcell'>${user?.location?.city}</td>
+        <td class='c-table__td' data-label='STATE' role='gridcell'>${user?.location?.state}</td>
+        <td class='c-table__td' data-label='ZIP' role='gridcell'>${user?.location?.postcode}</td>
+        <td class='c-table__td' data-label='MEMBER SINCE' role='gridcell'>${formatDate(user?.registered?.date)}</td>
       </tr>
       `;
 		});
