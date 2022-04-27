@@ -73,8 +73,8 @@ async function init() {
 		 *
 		 * @param {HTMLTableElement}  table   The desired table that needs to be sorted
 		 * @param {Number}            column  The index of the column to sort
-		 * @param {Boolean}           asc       Determines if the sorting will be in ascending/descending order
-		 * @return {Function}                 Returns the function that will be used to sort and memoize the
+		 * @param {Boolean}           asc     Determines if the sorting will be in ascending/descending order
+		 * @return {Function}                 Returns the append function that adds the new table body to the current table
 		 */
 		return (table, column, asc = true) => {
 			// initialize the array of sorted rows
