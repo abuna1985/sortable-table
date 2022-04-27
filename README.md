@@ -311,7 +311,7 @@ https://github.com/abuna1985/sortable-table/blob/f38a11e78125b989fc2ae1443b12669
 
 we will call `memoizedCache` and name the returning function `sortByTableColumn`
 
-https://github.com/abuna1985/sortable-table/blob/f38a11e78125b989fc2ae1443b12669f8a1f9741/assets/js/script.js#L69
+https://github.com/abuna1985/sortable-table/blob/f38a11e78125b989fc2ae1443b12669f8a1f9741/assets/js/script.js#L14
 
 We then call `sortByTableColumn` in the click listener. Notice I create an event listener on the document and add a conditional for make sure the button with a class `js-column-button` is the only element that the sorting function will work.
 
