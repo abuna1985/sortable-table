@@ -316,7 +316,7 @@ https://github.com/abuna1985/sortable-table/blob/f95667b4f48b8214fe861fca0ee3b2a
 
 We then call `sortByTableColumn` in the click listener. Notice I create an event listener on the document and add a conditional for make sure the button with a class `js-column-button` is the only element that the sorting function will work.
 
-https://github.com/abuna1985/sortable-table/blob/891f3f9ff801442ce190ac1c74e38e1c55fb42e1/assets/js/script.js#L327-337
+https://github.com/abuna1985/sortable-table/blob/891f3f9ff801442ce190ac1c74e38e1c55fb42e1/assets/js/script.js#L327-L337
 
 https://github.com/abuna1985/sortable-table/blob/891f3f9ff801442ce190ac1c74e38e1c55fb42e1/assets/js/script.js#L366-L367
 
