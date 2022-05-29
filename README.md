@@ -292,7 +292,7 @@ In most API fetching demos, the API call is made as the page is rendered. I deci
 
 Once the user closes out the window tab, the data from session storage is removed. Below is the snippet where I added session storage logic:
 
-https://github.com/abuna1985/sortable-table/blob/5217ffb0c52d9339c694ecd76b208a1203660631/assets/js/script.js#L324-L343
+https://github.com/abuna1985/sortable-table/blob/891f3f9ff801442ce190ac1c74e38e1c55fb42e1/assets/js/script.js#L342-L360
 
 #### Caching Sorted Tables in the Event Listener (Memoization)
 
@@ -300,23 +300,25 @@ I had to demonstrate memoization for a few technical interviews recently. I want
 
 So I initially create a cache within the event listener function and return a function that will be used when the column button is clicked. 
 
-https://github.com/abuna1985/sortable-table/blob/f38a11e78125b989fc2ae1443b12669f8a1f9741/assets/js/script.js#L69-L79
+https://github.com/abuna1985/sortable-table/blob/891f3f9ff801442ce190ac1c74e38e1c55fb42e1/assets/js/script.js#L71-L81
 
 Win the return function, we will try to access the cache to see if `cache[`${order}${column}`]` (example `cache['ascending1']` for column 1 in ascending order). if it does not exist, we will perform the sort.
 
-https://github.com/abuna1985/sortable-table/blob/f38a11e78125b989fc2ae1443b12669f8a1f9741/assets/js/script.js#L93-L99
+https://github.com/abuna1985/sortable-table/blob/891f3f9ff801442ce190ac1c74e38e1c55fb42e1/assets/js/script.js#L95-L149
 
 After the sort is performed, we will store it in the `cache` object for future reference.
 
-https://github.com/abuna1985/sortable-table/blob/f38a11e78125b989fc2ae1443b12669f8a1f9741/assets/js/script.js#L144
+https://github.com/abuna1985/sortable-table/blob/891f3f9ff801442ce190ac1c74e38e1c55fb42e1/assets/js/script.js#L146
 
 we will call `saveToCache` and name the returning function `sortByTableColumn`
 
-https://github.com/abuna1985/sortable-table/blob/f38a11e78125b989fc2ae1443b12669f8a1f9741/assets/js/script.js#L14
+https://github.com/abuna1985/sortable-table/blob/f95667b4f48b8214fe861fca0ee3b2abbc8efb6d/assets/js/script.js#L16
 
 We then call `sortByTableColumn` in the click listener. Notice I create an event listener on the document and add a conditional for make sure the button with a class `js-column-button` is the only element that the sorting function will work.
 
-https://github.com/abuna1985/sortable-table/blob/f38a11e78125b989fc2ae1443b12669f8a1f9741/assets/js/script.js#L350-L362
+https://github.com/abuna1985/sortable-table/blob/891f3f9ff801442ce190ac1c74e38e1c55fb42e1/assets/js/script.js#L327-337
+
+https://github.com/abuna1985/sortable-table/blob/891f3f9ff801442ce190ac1c74e38e1c55fb42e1/assets/js/script.js#L366-L367
 
 [Back to Top](#table-of-contents)
 
