@@ -43,8 +43,9 @@
     - [BEM naming convention](#bem-naming-convention)
 - [Additional Features](#additional-features)
 - [Resources](#resources)
-  - [HTML links](#html-links)
-  - [CSS links](#css-links)
+  - [Accessibility Links](#accessibility-links)
+  - [HTML Links](#html-links)
+  - [CSS Links](#css-links)
   - [JavaScript Links](#javascript-links)
 - [Author](#author)
 - [Acknowledgments](#acknowledgments)
@@ -55,7 +56,7 @@
 
 This project is a simple single-page responsive design which takes data from the [Random User Generator API](https://randomuser.me/) and builds a table which can sorted by the column headers with a mouse and/or keyboard.
 
-This project is a simple responsive single-page which takes data from the Random User Generator API and builds a table which can sorted by the column headers with a <code>click</code> of a mouse and/or <code>enter/space</code> key.
+This project is a simple responsive web page which takes data from the Random User Generator API and builds an accessible table which can sorted by the column headers with a <code>click</code> of a mouse and/or <code>enter/space</code> key.
 
 ### Visual Examples
 
@@ -309,7 +310,7 @@ After the sort is performed, we will store it in the `cache` object for future r
 
 https://github.com/abuna1985/sortable-table/blob/f38a11e78125b989fc2ae1443b12669f8a1f9741/assets/js/script.js#L144
 
-we will call `memoizedCache` and name the returning function `sortByTableColumn`
+we will call `saveToCache` and name the returning function `sortByTableColumn`
 
 https://github.com/abuna1985/sortable-table/blob/f38a11e78125b989fc2ae1443b12669f8a1f9741/assets/js/script.js#L14
 
@@ -388,7 +389,7 @@ After reading the [namespace section of this Smashing Magazine article on mistak
 As a result I used the following block class names:
 
 - **Components** - `c-header`, `c-table`
-  - **Elements** - `c-header__title`, `c-table__td`
+- **Elements** - `c-header__title`, `c-table__td`
 - **Layout** - `.l-table-container`, `.l-loading-container`
 - **States** - `is-loading`, `has-error`
 
@@ -396,24 +397,27 @@ As a result I used the following block class names:
 
 ## Additional Features
 
-1. In tablet/mobile view, add tab functionality to focus on each card full of data
-2. Add an input to search on the table and highlight
+1. Pagination for multiple pages of results
+2. In tablet/mobile view, add tab functionality to focus on each card full of data
+3. Add an input to search on the table and highlight
 
 [Back to Top](#table-of-contents)
 
 ## Resources
 
-### HTML links
+### Accessibility Links
 
 - [Web AIM - Creating accessible tables](https://webaim.org/techniques/tables/data)
 - [MDN - HTML table advanced features and accessibility](https://developer.mozilla.org/en-US/docs/Learn/HTML/Tables/Advanced)
 - [Deque University - Sortable table example](https://dequeuniversity.com/library/aria/table-sortable)
 - [W3 - Sortable table example](https://w3c.github.io/aria-practices/examples/table/sortable-table.html)
+### HTML Links
+
 - [HTML Symbols/Entity reference](https://www.toptal.com/designers/htmlarrows/)
+
+### CSS Links
+
 - [Codepen - David Miller - Responsive table example](https://codepen.io/Orangetronic/full/pJgpXw)
-
-### CSS links
-
 - [MDN Docs - table-layout](https://developer.mozilla.org/en-US/docs/Web/CSS/table-layout)
 - [LogRocket- CSS animated page loading](https://blog.logrocket.com/animated-page-loaders-css/)
 - [Smashing Magazine - David Berner - Battling BEM CSS: 10 Common Problems And How To Avoid Them](https://www.smashingmagazine.com/2016/06/battling-bem-extended-edition-common-problems-and-how-to-avoid-them/)
