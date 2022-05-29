@@ -225,7 +225,7 @@ async function setupTable() {
 	 * Create HTML loading container
 	 * @return {String} the HTML loading screen template
 	 */
-	function renderLoadingContainer() {
+	function displayLoadingContainer() {
 		return `
     <div class='l-loading-container'>
       <div class='is-loading'>
@@ -339,7 +339,7 @@ async function setupTable() {
 	// 3. INITS & EVENT LISTENERS
 
 	// Initial loading State
-	tableBody.innerHTML = renderLoadingContainer();
+	tableBody.innerHTML = displayLoadingContainer();
 	if (sessionStorage.getItem('userdata')) {
 		// Use the data from session storage
 		results = JSON.parse(sessionStorage.getItem('userdata'));
