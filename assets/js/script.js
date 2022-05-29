@@ -1,6 +1,8 @@
 // I felt it was a good practice to wrap all JavaScript logic into a function so global variables/functions are not accessible in the console
-async function init() {
+async function setupTable() {
 	// 1. VARIABLES
+	// Get table element
+	const table = document.querySelector('.c-table');
 	const tableHeader = document.querySelector('.c-table__head');
 	const tableBody = document.querySelector('.c-table__body');
 	// Since the data being returned is an array, I can start with an empty array so I can handle edge cases when trying to render it in HTML
@@ -11,7 +13,7 @@ async function init() {
 	// Chose these 10 properties since they fit the 100% width of the table
 	let headerColumns = ['ID', 'FIRST', 'LAST', 'IMAGE', 'PHONE', 'ADDRESS', 'CITY', 'STATE', 'ZIP', 'MEMBER SINCE'];
 	// From now on we can use the function name sortTableByColumn and still access to store sorted arrays in the cache object
-	let sortTableByColumn = memoizedCache();
+	let sortTableByColumn = saveToCache();
 	// For easy reference to the keyboard key numbers
 	// I wanted to implement Object.freeze to ensure properties cannot be added to the CODES constant (making it a true constant variable)
 	const CODES = Object.freeze({
@@ -66,7 +68,7 @@ async function init() {
 	/**
 	 * A function wrapper with a cache object where the sorted arrays will be stored
 	 */
-	function memoizedCache() {
+	function saveToCache() {
 		let cache = {};
 		/**
 		 * Sorts the table in ascending/descending order and updates the view of the table
@@ -74,7 +76,7 @@ async function init() {
 		 * @param {HTMLTableElement}  table   The desired table that needs to be sorted
 		 * @param {Number}            column  The index of the column to sort
 		 * @param {Boolean}           asc     Determines if the sorting will be in ascending/descending order
-		 * @return {Function}                 Returns the append function that adds the new table body to the current table
+		 * @return {Boolean}                  Returns true when the function completes properly
 		 */
 		return (table, column, asc = true) => {
 			// initialize the array of sorted rows
@@ -161,7 +163,9 @@ async function init() {
 			// Add aria-sort="ascending/descending" to the selected column button parent element (<th scope='col' class='c-table__th'>)
 			selectedColumnButton.parentElement.setAttribute('aria-sort', order);
 			// Add newly sorted rows
-			return tableBody.append(...sortedRows);
+			tableBody.append(...sortedRows);
+
+			return true;
 		};
 	}
 	/**
@@ -169,7 +173,7 @@ async function init() {
 	 * @param   {Array}   columns   The json we want to convert to HTML
 	 * @return  {String}  headerRow The HTML string template of the table header columns
 	 */
-	function renderHeaderColumns(columns) {
+	function displayTableHeader(columns) {
 		let headerRow = `<tr class='table_tr' role='row'>${columns.map((column, index) => {
 			return `
 			<th role='columnheader' scope='col' class='c-table__th'>
@@ -189,7 +193,7 @@ async function init() {
 	 * @param   {Array}   userData An array of objects that contain the users information
 	 * @return  {String}  rows.join('') The HTML string template with table row data
 	 */
-	function renderTableBody(userData) {
+	function displayTableBody(userData) {
 		if (!userData.length) {
 			// console.log({userData});
 			return `
@@ -250,8 +254,7 @@ async function init() {
 	 */
 	function focusOnElement(direction) {
 		//add all elements we want to include in our selection
-		const focusableElements =
-			'a:not([disabled]), button:not([disabled]), input[type=text]:not([disabled]), [tabindex]:not([disabled]):not([tabindex="-1"])';
+		const focusableElements = 'a:not([disabled]), button:not([disabled]), input[type=text]:not([disabled]), [tabindex]:not([disabled]):not([tabindex="-1"])';
 		let focusable = [...document.querySelectorAll(focusableElements)];
 		const lastFocusableIndex = parseInt(focusable.length - 1);
 		const startOrFinish = direction === 'next' ? 0 : lastFocusableIndex;
@@ -280,7 +283,7 @@ async function init() {
 	 * Event handler for key press events
 	 * @param {Object} event where event information is stored
 	 */
-	function keydownEventListener(event) {
+	function handleKeydown(event) {
 		let key = event.code;
 		// console.log({ shiftKey: event.shiftKey})
 		// console.log({ key: event.key, keyCode: event.keyCode})
@@ -317,6 +320,20 @@ async function init() {
 				focusOnElement('previous');
 				break;
 		}
+
+		return false;
+	}
+
+	function handleClick(event) {
+		// the function will only run when a <th> is clicked on
+		if (event.target?.closest('.js-column-button')) {
+			// Get Column ID number
+			const columnIndex = parseInt(event.target.getAttribute('data-col'));
+			// Check if span.c-table__button--icon has the ascending icon class and return boolean (true/false)
+			const currentIsAscending = event.target.firstElementChild?.classList?.contains('c-table__button--asc');
+			sortTableByColumn(table, columnIndex, !currentIsAscending);
+		}
+		return false;
 	}
 
 	// 3. INITS & EVENT LISTENERS
@@ -343,28 +360,16 @@ async function init() {
 	}
 	// console.log({data});
 	// Fill in HTML table header and body
-	tableHeader.innerHTML = renderHeaderColumns(headerColumns);
-	tableBody.innerHTML = renderTableBody(results);
+	tableHeader.innerHTML = displayTableHeader(headerColumns);
+	tableBody.innerHTML = displayTableBody(results);
 
 	// Click Event Listener
-	document.addEventListener('click', (event) => {
-		// the function will only run when a <th> is clicked on
-		if (event.target?.closest('.js-column-button')) {
-			// Get table element
-			const table = document.querySelector('.c-table');
-			// Get Column ID number
-			const columnIndex = parseInt(event.target.getAttribute('data-col'));
-			// Check if span.c-table__button--icon has the ascending icon class and return boolean (true/false)
-			const currentIsAscending = event.target.firstElementChild?.classList?.contains('c-table__button--asc');
-			sortTableByColumn(table, columnIndex, !currentIsAscending);
-		}
-		return false;
-	});
+	document.addEventListener('click', handleClick);
 
-	document.addEventListener('keydown', (event) => {
-		keydownEventListener(event);
-		return false;
-	});
+	document.addEventListener('keydown', handleKeydown);
+
+	// Start with the default ascending order with the ID column
+	sortTableByColumn(table, 0);
 }
 
-init();
+setupTable();
