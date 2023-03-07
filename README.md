@@ -1,6 +1,5 @@
 [![made-with-javascript](https://img.shields.io/badge/Made%20with-JavaScript-1f425f.svg)](https://www.javascript.com)
-[![GitHub commits](https://badgen.net/github/commits/abuna1985/sortable-table/main/)](https://GitHub.com/abuna1985/sortable-table/commits/)
-[![GitHub stars](https://badgen.net/github/stars/abuna1985/sortable-table)](https://GitHub.com/abuna1985/sortable-table/stargazers/)
+[![GitHub commits](https://badgen.net/github/commits/abuna1985/sortable-table/main/)](https://github.com/abuna1985/sortable-table/commits/)
 [![GitHub watchers](https://badgen.net/github/watchers/abuna1985/sortable-table)](https://GitHub.com/abuna1985/sortable-tables/watchers/)
 [![GitHub license](https://img.shields.io/github/license/abuna1985/sortable-table?color="blue")](https://github.com/abuna1985/sortable-tables/blob/main/LICENSE)
 <br />
